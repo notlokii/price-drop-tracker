@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { scrapeProduct } from '../src/services/scraper.js'
+import { scrapeProduct, detectStore } from '../src/services/scraper.js'
 
 const url = process.argv[2]
 
@@ -8,6 +8,7 @@ if (!url) {
   process.exit(1)
 }
 
+console.log(`Store detected: ${detectStore(url)}`)
 console.log(`Scraping: ${url}\n`)
 
 try {
