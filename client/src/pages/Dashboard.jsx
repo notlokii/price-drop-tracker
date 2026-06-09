@@ -1,49 +1,66 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import CardGrid from '../components/CardGrid'
 import AddItemModal from '../components/AddItemModal'
-
-const FAKE_ITEMS = [
-  {
-    id: '1',
-    name: 'Hollister Classic Hoodie',
-    image: 'https://picsum.photos/seed/hoodie/400/400',
-    currentPrice: 49.99,
-    targetPrice: 45.0,
-    url: 'https://example.com/hoodie',
-  },
-  {
-    id: '2',
-    name: 'Nike Air Max 90',
-    image: 'https://picsum.photos/seed/nike/400/400',
-    currentPrice: 119.99,
-    targetPrice: 100.0,
-    url: 'https://example.com/nike',
-  },
-  {
-    id: '3',
-    name: 'ASOS Oversized T-Shirt',
-    image: 'https://picsum.photos/seed/asos/400/400',
-    currentPrice: 18.0,
-    targetPrice: 20.0,
-    url: 'https://example.com/asos',
-  },
-]
+import { fetchItems, createItem, deleteItem } from '../api/items'
 
 function Dashboard() {
-  const [items] = useState(FAKE_ITEMS)
+  const [items, setItems] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  async function loadItems() {
+    try {
+      setError(null)
+      const data = await fetchItems()
+      setItems(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadItems()
+  }, [])
+
+  async function handleAddItem(url, targetPrice) {
+    const newItem = await createItem(url, targetPrice)
+    // Append directly — no second request needed (GET never scrapes)
+    setItems((prev) => [newItem, ...prev])
+  }
+
+  async function handleDeleteItem(id) {
+    await deleteItem(id)
+    setItems((prev) => prev.filter((item) => item.id !== id))
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
       <Navbar onTrackItemClick={() => setIsModalOpen(true)} />
       <main className="mx-auto max-w-6xl px-6 py-8">
         <h2 className="mb-6 text-2xl font-bold">Your Tracked Items</h2>
-        <CardGrid items={items} />
+
+        {loading && (
+          <p className="py-12 text-center text-gray-400">Loading items...</p>
+        )}
+
+        {error && (
+          <p className="mb-4 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-red-300">
+            {error}. Is the backend running at localhost:5001?
+          </p>
+        )}
+
+        {!loading && !error && (
+          <CardGrid items={items} onDelete={handleDeleteItem} />
+        )}
       </main>
       <AddItemModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAddItem}
       />
     </div>
   )

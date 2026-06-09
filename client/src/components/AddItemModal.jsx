@@ -1,17 +1,28 @@
 import { useState } from 'react'
 
-function AddItemModal({ isOpen, onClose }) {
+function AddItemModal({ isOpen, onClose, onSubmit }) {
   const [url, setUrl] = useState('')
   const [targetPrice, setTargetPrice] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
 
   if (!isOpen) return null
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault()
-    // Phase 1: form does nothing on submit yet
-    setUrl('')
-    setTargetPrice('')
-    onClose()
+    setSubmitting(true)
+    setError(null)
+
+    try {
+      await onSubmit(url, targetPrice)
+      setUrl('')
+      setTargetPrice('')
+      onClose()
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -22,7 +33,8 @@ function AddItemModal({ isOpen, onClose }) {
           <button
             type="button"
             onClick={onClose}
-            className="text-gray-400 transition hover:text-white"
+            disabled={submitting}
+            className="text-gray-400 transition hover:text-white disabled:opacity-30"
             aria-label="Close modal"
           >
             ✕
@@ -37,11 +49,16 @@ function AddItemModal({ isOpen, onClose }) {
             <input
               id="url"
               type="url"
+              required
+              disabled={submitting}
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://store.com/product/..."
-              className="w-full rounded-lg border border-gray-700 bg-gray-950 px-3 py-2 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-700 bg-gray-950 px-3 py-2 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none disabled:opacity-50"
             />
+            <p className="mt-1 text-xs text-gray-500">
+              We scrape this page once to get the name, image, and current price.
+            </p>
           </div>
 
           <div>
@@ -56,18 +73,31 @@ function AddItemModal({ isOpen, onClose }) {
               type="number"
               min="0"
               step="0.01"
+              required
+              disabled={submitting}
               value={targetPrice}
               onChange={(e) => setTargetPrice(e.target.value)}
               placeholder="29.99"
-              className="w-full rounded-lg border border-gray-700 bg-gray-950 px-3 py-2 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none"
+              className="w-full rounded-lg border border-gray-700 bg-gray-950 px-3 py-2 text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none disabled:opacity-50"
             />
           </div>
 
+          {submitting && (
+            <p className="text-sm text-indigo-300">
+              Scraping product page… this usually takes 5–10 seconds.
+            </p>
+          )}
+
+          {error && (
+            <p className="text-sm text-red-400">{error}</p>
+          )}
+
           <button
             type="submit"
-            className="w-full rounded-lg bg-indigo-600 py-2 font-medium text-white transition hover:bg-indigo-500"
+            disabled={submitting}
+            className="w-full rounded-lg bg-indigo-600 py-2 font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
           >
-            Add Item
+            {submitting ? 'Scraping…' : 'Add Item'}
           </button>
         </form>
       </div>

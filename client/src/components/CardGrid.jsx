@@ -1,6 +1,6 @@
 import ProductCard from './ProductCard'
 
-function CardGrid({ items }) {
+function CardGrid({ items, onDelete }) {
   if (items.length === 0) {
     return (
       <p className="py-12 text-center text-gray-400">
@@ -12,7 +12,7 @@ function CardGrid({ items }) {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map((item) => (
-        <ProductCard key={item.id} item={item} />
+        <ProductCard key={item.id} item={item} onDelete={onDelete} />
       ))}
     </div>
   )

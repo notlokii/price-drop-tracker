@@ -1,4 +1,4 @@
-function ProductCard({ item }) {
+function ProductCard({ item, onDelete }) {
   const atTarget = item.currentPrice <= item.targetPrice
 
   return (
@@ -35,6 +35,13 @@ function ProductCard({ item }) {
             </span>
           </p>
         </div>
+        <button
+          type="button"
+          onClick={() => onDelete(item.id)}
+          className="mt-4 w-full rounded-lg border border-gray-700 px-3 py-1.5 text-sm text-gray-400 transition hover:border-red-800 hover:text-red-400"
+        >
+          Delete
+        </button>
       </div>
     </article>
   )

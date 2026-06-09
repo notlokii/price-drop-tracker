@@ -1,0 +1,27 @@
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+
+export async function fetchItems() {
+  const res = await fetch(`${API_URL}/items`)
+  if (!res.ok) throw new Error('Failed to fetch items')
+  return res.json()
+}
+
+export async function createItem(url, targetPrice) {
+  const res = await fetch(`${API_URL}/items`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url, targetPrice: Number(targetPrice) }),
+  })
+
+  if (!res.ok) {
+    const data = await res.json()
+    throw new Error(data.error || 'Failed to create item')
+  }
+
+  return res.json()
+}
+
+export async function deleteItem(id) {
+  const res = await fetch(`${API_URL}/items/${id}`, { method: 'DELETE' })
+  if (!res.ok) throw new Error('Failed to delete item')
+}
