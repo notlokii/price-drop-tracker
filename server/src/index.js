@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
 import itemsRouter from './routes/items.js'
+import authRouter from './routes/auth.js'
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -14,6 +15,7 @@ app.get('/', (req, res) => {
     message: 'PriceDrop API is running',
     testRoute: '/test',
     itemsRoute: '/items',
+    authRoutes: ['/auth/register', '/auth/login'],
   })
 })
 
@@ -21,6 +23,7 @@ app.get('/test', (req, res) => {
   res.json({ message: 'Server is running!' })
 })
 
+app.use('/auth', authRouter)
 app.use('/items', itemsRouter)
 
 const server = app.listen(PORT, () => {

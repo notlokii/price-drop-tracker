@@ -49,7 +49,7 @@ function Dashboard() {
 
         {error && (
           <p className="mb-4 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-red-300">
-            {error}. Is the backend running at localhost:5001?
+            {error}
           </p>
         )}
 

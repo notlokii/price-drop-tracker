@@ -1,12 +1,10 @@
 import prisma from '../lib/prisma.js'
-import { getDevUser } from '../lib/devUser.js'
 import { scrapeProduct } from '../services/scraper.js'
 
 export async function getItems(req, res) {
   try {
-    const user = await getDevUser()
     const items = await prisma.item.findMany({
-      where: { userId: user.id },
+      where: { userId: req.user.id },
       orderBy: { createdAt: 'desc' },
     })
     res.json(items)
@@ -35,17 +33,13 @@ export async function createItem(req, res) {
       return res.status(400).json({ error: 'targetPrice must be a positive number' })
     }
 
-    const user = await getDevUser()
-
-    // Avoid scraping the same URL twice — read from DB instead
     const existing = await prisma.item.findFirst({
-      where: { url, userId: user.id },
+      where: { url, userId: req.user.id },
     })
     if (existing) {
       return res.status(409).json({ error: 'This URL is already being tracked' })
     }
 
-    // One scrape per new item — only happens here, never on GET
     let scraped
     try {
       scraped = await scrapeProduct(url)
@@ -63,7 +57,7 @@ export async function createItem(req, res) {
         image: scraped.image,
         currentPrice: scraped.currentPrice,
         targetPrice: parsedTarget,
-        userId: user.id,
+        userId: req.user.id,
       },
     })
 
@@ -77,10 +71,9 @@ export async function createItem(req, res) {
 export async function deleteItem(req, res) {
   try {
     const { id } = req.params
-    const user = await getDevUser()
 
     const item = await prisma.item.findFirst({
-      where: { id, userId: user.id },
+      where: { id, userId: req.user.id },
     })
 
     if (!item) {
