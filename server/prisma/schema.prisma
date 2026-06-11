@@ -24,6 +24,7 @@ model Item {
   currentPrice  Float
   targetPrice   Float
   lastChecked   DateTime?
+  scrapeError   String?
   createdAt     DateTime       @default(now())
   userId        String
   user          User           @relation(fields: [userId], references: [id])

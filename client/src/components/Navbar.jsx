@@ -10,10 +10,10 @@ function Navbar({ onTrackItemClick }) {
   }
 
   return (
-    <nav className="border-b border-gray-800 bg-gray-950 px-6 py-4">
-      <div className="mx-auto flex max-w-6xl items-center justify-between">
+    <nav className="border-b border-gray-800 bg-gray-950 px-4 py-4 sm:px-6">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-xl font-bold text-white">PriceDrop</h1>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
           <button
             type="button"
             onClick={onTrackItemClick}

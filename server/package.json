@@ -9,7 +9,9 @@
     "db:validate": "prisma validate",
     "db:migrate": "prisma migrate dev",
     "scrape:test": "node scripts/test-scraper.js",
-    "scrape:debug": "node scripts/debug-scraper.js"
+    "scrape:debug": "node scripts/debug-scraper.js",
+    "mail:test": "node scripts/test-mailer.js",
+    "price:check": "node scripts/run-price-check.js"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -18,9 +20,11 @@
     "dotenv": "^17.4.2",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.3",
+    "node-cron": "^4.2.1",
     "puppeteer": "^25.1.0",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "resend": "^6.12.4"
   },
   "devDependencies": {
     "prisma": "^6.19.3"

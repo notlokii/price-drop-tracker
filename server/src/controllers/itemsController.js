@@ -58,7 +58,13 @@ export async function createItem(req, res) {
         currentPrice: scraped.currentPrice,
         targetPrice: parsedTarget,
         userId: req.user.id,
+        scrapeError: null,
+        lastChecked: new Date(),
       },
+    })
+
+    await prisma.priceHistory.create({
+      data: { price: scraped.currentPrice, itemId: item.id },
     })
 
     res.status(201).json(item)
@@ -85,5 +91,30 @@ export async function deleteItem(req, res) {
   } catch (err) {
     console.error('DELETE /items error:', err)
     res.status(500).json({ error: 'Failed to delete item' })
+  }
+}
+
+export async function getPriceHistory(req, res) {
+  try {
+    const { id } = req.params
+
+    const item = await prisma.item.findFirst({
+      where: { id, userId: req.user.id },
+    })
+
+    if (!item) {
+      return res.status(404).json({ error: 'Item not found' })
+    }
+
+    const history = await prisma.priceHistory.findMany({
+      where: { itemId: id },
+      orderBy: { checkedAt: 'asc' },
+      select: { price: true, checkedAt: true },
+    })
+
+    res.json(history)
+  } catch (err) {
+    console.error('GET /items/:id/history error:', err)
+    res.status(500).json({ error: 'Failed to fetch price history' })
   }
 }

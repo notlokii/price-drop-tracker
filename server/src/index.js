@@ -3,6 +3,7 @@ import express from 'express'
 import cors from 'cors'
 import itemsRouter from './routes/items.js'
 import authRouter from './routes/auth.js'
+import { startPriceCheckerCron } from './jobs/priceChecker.js'
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -29,6 +30,7 @@ app.use('/items', itemsRouter)
 const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
   console.log(`Test it: http://localhost:${PORT}/test`)
+  startPriceCheckerCron()
 })
 
 server.on('error', (err) => {

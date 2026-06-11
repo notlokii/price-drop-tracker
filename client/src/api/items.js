@@ -51,3 +51,10 @@ export async function deleteItem(id) {
   })
   return handleResponse(res, 'Failed to delete item')
 }
+
+export async function fetchPriceHistory(itemId) {
+  const res = await fetch(`${API_URL}/items/${itemId}/history`, {
+    headers: authHeaders(),
+  })
+  return handleResponse(res, 'Failed to fetch price history')
+}
