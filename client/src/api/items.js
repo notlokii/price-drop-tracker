@@ -1,7 +1,6 @@
 import { getToken } from './auth.js'
 import { parseResponse } from './http.js'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+import { getApiUrl } from './config.js'
 
 function authHeaders(extra = {}) {
   const headers = { ...extra }
@@ -15,6 +14,7 @@ function authHeaders(extra = {}) {
 }
 
 async function apiFetch(path, options, fallbackError) {
+  const API_URL = getApiUrl()
   try {
     const res = await fetch(`${API_URL}${path}`, options)
     return parseResponse(res, fallbackError)

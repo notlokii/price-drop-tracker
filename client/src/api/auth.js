@@ -1,6 +1,5 @@
 import { parseResponse } from './http.js'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+import { getApiUrl } from './config.js'
 const TOKEN_KEY = 'token'
 
 export function getToken() {
@@ -24,6 +23,7 @@ export function logout() {
 }
 
 async function authRequest(path, email, password) {
+  const API_URL = getApiUrl()
   let res
   try {
     res = await fetch(`${API_URL}${path}`, {
