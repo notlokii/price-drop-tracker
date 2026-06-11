@@ -10,19 +10,38 @@ const app = express()
 const PORT = process.env.PORT || 5001
 
 const clientOrigins = process.env.CLIENT_URL
-  ? process.env.CLIENT_URL.split(',').map((origin) => origin.trim())
-  : undefined
+  ? process.env.CLIENT_URL.split(',').map((origin) =>
+      origin.trim().replace(/\/$/, '')
+    )
+  : null
 
 app.use(
-  cors(
-    clientOrigins
-      ? {
-          origin: clientOrigins,
-          methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-        }
-      : undefined
-  )
+  cors({
+    origin(origin, callback) {
+      // Allow server-to-server, curl, and same-origin requests
+      if (!origin) return callback(null, true)
+
+      const normalized = origin.replace(/\/$/, '')
+
+      // If CLIENT_URL is set, only allow listed origins
+      if (clientOrigins) {
+        if (clientOrigins.includes(normalized)) return callback(null, true)
+        console.warn(`[cors] Blocked origin: ${origin}`)
+        return callback(null, false)
+      }
+
+      // No CLIENT_URL set — allow all (JWT still protects /items)
+      return callback(null, true)
+    },
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  })
 )
+
+if (clientOrigins) {
+  console.log('[cors] Allowed origins:', clientOrigins.join(', '))
+} else {
+  console.log('[cors] CLIENT_URL not set — allowing all origins')
+}
 app.use(express.json())
 
 app.get('/', (req, res) => {
