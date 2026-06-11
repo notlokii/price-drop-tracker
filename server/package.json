@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "prisma": "^6.19.3",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -26,8 +27,5 @@
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "resend": "^6.12.4"
-  },
-  "devDependencies": {
-    "prisma": "^6.19.3"
   }
 }

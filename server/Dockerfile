@@ -25,18 +25,22 @@ RUN apt-get update && apt-get install -y \
 
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
-ENV NODE_ENV=production
 
 WORKDIR /app
 
 COPY package*.json ./
 COPY prisma ./prisma/
 
+# Install all deps (including prisma CLI) before setting NODE_ENV=production
 RUN npm ci && npx prisma generate
+
+ENV NODE_ENV=production
 
 COPY src ./src/
 COPY scripts ./scripts/
 
+RUN chmod +x scripts/start.sh
+
 EXPOSE 5001
 
-CMD ["sh", "-c", "npx prisma migrate deploy && node src/index.js"]
+CMD ["./scripts/start.sh"]

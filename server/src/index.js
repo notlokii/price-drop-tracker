@@ -40,9 +40,9 @@ app.get('/test', (req, res) => {
 app.use('/auth', authRouter)
 app.use('/items', itemsRouter)
 
-const server = app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`)
-  console.log(`Test it: http://localhost:${PORT}/test`)
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`)
+  console.log(`Health check: GET /test`)
 
   if (!process.env.RESEND_API_KEY) {
     console.warn(
