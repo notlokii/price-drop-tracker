@@ -3,6 +3,10 @@ import PriceHistoryChart from './PriceHistoryChart'
 function ProductCard({ item, onDelete, deleting }) {
   const atTarget = item.currentPrice <= item.targetPrice
   const hasError = Boolean(item.scrapeError)
+  const savings =
+    item.currentPrice > item.targetPrice
+      ? item.currentPrice - item.targetPrice
+      : 0
 
   function handleDeleteClick(e) {
     e.preventDefault()
@@ -12,8 +16,12 @@ function ProductCard({ item, onDelete, deleting }) {
 
   return (
     <article
-      className={`overflow-hidden rounded-xl border bg-gray-900 transition hover:border-gray-700 ${
-        hasError ? 'border-red-900' : 'border-gray-800'
+      className={`cyber-corner-card cyber-panel-glow overflow-hidden ${
+        atTarget
+          ? 'border-cyan/40 shadow-[0_0_20px_rgba(34,211,238,0.12)]'
+          : hasError
+            ? 'border-pink/30'
+            : ''
       }`}
     >
       <a
@@ -23,26 +31,29 @@ function ProductCard({ item, onDelete, deleting }) {
         className="group block cursor-pointer"
         aria-label={`Open ${item.name} on store website`}
       >
-        <img
-          src={item.image}
-          alt={item.name}
-          className="h-40 w-full object-cover transition group-hover:opacity-90 sm:h-48"
-        />
+        <div className="relative">
+          <img
+            src={item.image}
+            alt={item.name}
+            className="h-40 w-full object-cover transition group-hover:opacity-80 sm:h-48"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-panel-raised via-transparent to-transparent opacity-60" />
+        </div>
         <div className="p-4 pb-0">
           <div className="mb-3 flex items-start justify-between gap-2">
-            <h3 className="line-clamp-2 font-semibold text-white group-hover:text-indigo-300">
+            <h3 className="line-clamp-2 font-medium text-white transition group-hover:text-neon-bright">
               {item.name}
             </h3>
             <span
-              className={`shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium ${
+              className={
                 hasError
-                  ? 'bg-red-900 text-red-300'
+                  ? 'cyber-badge-error'
                   : atTarget
-                    ? 'bg-green-900 text-green-300'
-                    : 'bg-yellow-900 text-yellow-300'
-              }`}
+                    ? 'cyber-badge-target'
+                    : 'cyber-badge-tracking'
+              }
             >
-              {hasError ? 'Check failed' : atTarget ? 'Target met' : 'Tracking'}
+              {hasError ? 'Failed' : atTarget ? 'Target' : 'Watch'}
             </span>
           </div>
         </div>
@@ -50,27 +61,35 @@ function ProductCard({ item, onDelete, deleting }) {
 
       <div className="px-4 pb-4">
         {hasError && (
-          <p className="mb-2 rounded-lg border border-red-900 bg-red-950 px-2 py-1.5 text-xs text-red-300">
+          <p className="mb-2 rounded-md border border-pink/30 bg-pink/5 px-2 py-1.5 text-xs text-pink">
             {item.scrapeError}
           </p>
         )}
 
-        <div className="space-y-1 text-sm">
-          <p className="text-gray-400">
-            Current:{' '}
-            <span className="font-medium text-white">
+        <div className="space-y-1.5 text-sm">
+          <p className="text-muted">
+            Current{' '}
+            <span className="font-semibold text-white">
               ${item.currentPrice.toFixed(2)}
             </span>
           </p>
-          <p className="text-gray-400">
-            Target:{' '}
-            <span className="font-medium text-indigo-400">
+          <p className="text-muted">
+            Target{' '}
+            <span className="font-semibold text-neon-bright">
               ${item.targetPrice.toFixed(2)}
             </span>
           </p>
+          {savings > 0 && (
+            <p className="text-xs text-pink">
+              ${savings.toFixed(2)} above target
+            </p>
+          )}
+          {atTarget && (
+            <p className="text-xs text-cyan">Ready to buy — target met!</p>
+          )}
           {item.lastChecked && (
-            <p className="text-xs text-gray-500">
-              Last checked:{' '}
+            <p className="text-xs text-muted/70">
+              Last checked{' '}
               {new Date(item.lastChecked).toLocaleDateString('en-US', {
                 month: 'short',
                 day: 'numeric',
@@ -87,7 +106,7 @@ function ProductCard({ item, onDelete, deleting }) {
           type="button"
           onClick={handleDeleteClick}
           disabled={deleting}
-          className="mt-4 w-full rounded-lg border border-gray-700 px-3 py-1.5 text-sm text-gray-400 transition hover:border-red-800 hover:text-red-400 disabled:opacity-50"
+          className="cyber-btn-danger mt-4 w-full"
         >
           {deleting ? 'Deleting...' : 'Delete'}
         </button>

@@ -1,1 +1,155 @@
 @import "tailwindcss";
+
+@theme {
+  --font-display: "Orbitron", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-void: #050508;
+  --color-panel: #0c0c14;
+  --color-panel-raised: #12121f;
+  --color-neon: #a855f7;
+  --color-neon-bright: #c084fc;
+  --color-neon-dim: #7c3aed;
+  --color-cyan: #22d3ee;
+  --color-pink: #f472b6;
+  --color-muted: #94a3b8;
+}
+
+@layer base {
+  body {
+    @apply bg-void font-body text-white antialiased;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .cyber-page {
+    @apply relative min-h-screen text-white;
+  }
+
+  .cyber-panel {
+    @apply rounded-lg border border-neon/25 bg-panel-raised/90;
+    box-shadow:
+      0 0 0 1px rgba(168, 85, 247, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .cyber-panel-glow {
+    @apply rounded-lg border border-neon/25 bg-panel-raised/90 transition-shadow duration-300;
+    box-shadow:
+      0 0 0 1px rgba(168, 85, 247, 0.05),
+      inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .cyber-panel-glow:hover {
+    box-shadow:
+      0 0 0 1px rgba(168, 85, 247, 0.2),
+      0 0 24px rgba(168, 85, 247, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .cyber-heading {
+    @apply font-display font-semibold tracking-wide text-white;
+  }
+
+  .cyber-label {
+    @apply mb-1.5 block text-xs font-medium uppercase tracking-widest text-muted;
+  }
+
+  .cyber-input {
+    @apply w-full rounded-md border border-neon/20 bg-void px-3 py-2.5 text-sm text-white placeholder:text-muted/50 transition-colors;
+    @apply focus:border-neon/60 focus:outline-none focus:ring-1 focus:ring-neon/40;
+    @apply disabled:opacity-50;
+  }
+
+  .cyber-btn-primary {
+    @apply rounded-md bg-neon px-4 py-2.5 text-sm font-semibold text-white transition-all;
+    @apply hover:bg-neon-bright hover:shadow-[0_0_20px_rgba(168,85,247,0.45)];
+    @apply disabled:opacity-50 disabled:hover:shadow-none;
+  }
+
+  .cyber-btn-ghost {
+    @apply rounded-md border border-neon/25 px-4 py-2 text-sm text-muted transition-all;
+    @apply hover:border-neon/50 hover:text-neon-bright hover:shadow-[0_0_12px_rgba(168,85,247,0.15)];
+    @apply disabled:opacity-50;
+  }
+
+  .cyber-btn-danger {
+    @apply rounded-md border border-pink/30 px-3 py-1.5 text-sm text-muted transition-all;
+    @apply hover:border-pink/60 hover:text-pink hover:shadow-[0_0_12px_rgba(244,114,182,0.2)];
+    @apply disabled:opacity-50;
+  }
+
+  .cyber-link {
+    @apply text-neon-bright transition-colors hover:text-cyan;
+  }
+
+  .cyber-divider {
+    @apply border-b border-neon/15;
+  }
+
+  .cyber-badge {
+    @apply shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide;
+  }
+
+  .cyber-badge-tracking {
+    @apply shrink-0 rounded-full border border-amber-500/40 bg-amber-500/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-amber-300;
+  }
+
+  .cyber-badge-target {
+    @apply shrink-0 rounded-full border border-cyan/50 bg-cyan/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-cyan;
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.2);
+  }
+
+  .cyber-badge-error {
+    @apply shrink-0 rounded-full border border-pink/50 bg-pink/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-wide text-pink;
+  }
+
+  .cyber-logo {
+    @apply font-display text-xl font-bold tracking-widest text-white;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+  }
+
+  .cyber-logo-accent {
+    @apply text-neon-bright;
+  }
+
+  .cyber-stat-value {
+    @apply font-display text-2xl font-semibold text-neon-bright;
+  }
+
+  .cyber-stat-label {
+    @apply text-xs uppercase tracking-widest text-muted;
+  }
+
+  .cyber-corner-card {
+    position: relative;
+  }
+
+  .cyber-corner-card::before,
+  .cyber-corner-card::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: rgba(168, 85, 247, 0.5);
+    pointer-events: none;
+  }
+
+  .cyber-corner-card::before {
+    top: -1px;
+    left: -1px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+  }
+
+  .cyber-corner-card::after {
+    bottom: -1px;
+    right: -1px;
+    border-bottom: 2px solid;
+    border-right: 2px solid;
+  }
+}

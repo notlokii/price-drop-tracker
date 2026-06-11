@@ -10,22 +10,20 @@ function Navbar({ onTrackItemClick }) {
   }
 
   return (
-    <nav className="border-b border-gray-800 bg-gray-950 px-4 py-4 sm:px-6">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-xl font-bold text-white">PriceDrop</h1>
+    <nav className="border-b border-neon/15 bg-panel/80 backdrop-blur-sm">
+      <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <h1 className="cyber-logo">
+          Price<span className="cyber-logo-accent">Drop</span>
+        </h1>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
           <button
             type="button"
             onClick={onTrackItemClick}
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-500"
+            className="cyber-btn-primary"
           >
             + Track Item
           </button>
-          <button
-            type="button"
-            onClick={handleLogout}
-            className="rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-400 transition hover:border-gray-600 hover:text-white"
-          >
+          <button type="button" onClick={handleLogout} className="cyber-btn-ghost">
             Log Out
           </button>
         </div>

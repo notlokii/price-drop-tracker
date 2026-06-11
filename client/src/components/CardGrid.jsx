@@ -5,16 +5,21 @@ function CardGrid({ items, onDelete, deletingId, searchQuery }) {
   if (items.length === 0) {
     if (searchQuery?.trim()) {
       return (
-        <p className="py-12 text-center text-gray-400">
-          No items match &quot;{searchQuery}&quot;
-        </p>
+        <div className="cyber-panel py-16 text-center">
+          <p className="text-muted">
+            No items match &quot;<span className="text-neon-bright">{searchQuery}</span>&quot;
+          </p>
+        </div>
       )
     }
 
     return (
-      <p className="py-12 text-center text-gray-400">
-        No items tracked yet. Click &quot;+ Track Item&quot; to add one.
-      </p>
+      <div className="cyber-panel py-16 text-center">
+        <p className="cyber-heading mb-2 text-lg text-neon-bright">No targets locked</p>
+        <p className="text-sm text-muted">
+          Click <span className="text-neon-bright">+ Track Item</span> to add your first product.
+        </p>
+      </div>
     )
   }
 
@@ -24,9 +29,9 @@ function CardGrid({ items, onDelete, deletingId, searchQuery }) {
     <div className="space-y-10">
       {storeGroups.map(({ store, items: storeItems }) => (
         <section key={store}>
-          <div className="mb-4 flex items-center justify-between border-b border-gray-800 pb-2">
-            <h3 className="text-lg font-semibold text-white">{store}</h3>
-            <span className="text-sm text-gray-500">
+          <div className="cyber-divider mb-4 flex items-center justify-between pb-3">
+            <h3 className="cyber-heading text-lg text-neon-bright">{store}</h3>
+            <span className="text-xs uppercase tracking-widest text-muted">
               {storeItems.length} item{storeItems.length === 1 ? '' : 's'}
             </span>
           </div>

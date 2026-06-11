@@ -11,9 +11,22 @@ createRoot(document.getElementById('root')).render(
       position="bottom-right"
       toastOptions={{
         style: {
-          background: '#111827',
+          background: '#12121f',
           color: '#fff',
-          border: '1px solid #374151',
+          border: '1px solid rgba(168, 85, 247, 0.35)',
+          boxShadow: '0 0 20px rgba(168, 85, 247, 0.15)',
+        },
+        success: {
+          iconTheme: {
+            primary: '#22d3ee',
+            secondary: '#12121f',
+          },
+        },
+        error: {
+          iconTheme: {
+            primary: '#f472b6',
+            secondary: '#12121f',
+          },
         },
       }}
     />

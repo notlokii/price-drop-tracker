@@ -42,13 +42,13 @@ function PriceHistoryChart({ itemId }) {
 
   if (loading) {
     return (
-      <p className="mt-3 text-xs text-gray-500">Loading price history...</p>
+      <p className="mt-3 text-xs text-muted/70">Loading price history...</p>
     )
   }
 
   if (history.length < 2) {
     return (
-      <p className="mt-3 text-xs text-gray-500">
+      <p className="mt-3 text-xs text-muted/70">
         Price history appears after the first daily check.
       </p>
     )
@@ -65,12 +65,12 @@ function PriceHistoryChart({ itemId }) {
         <LineChart data={chartData}>
           <XAxis
             dataKey="date"
-            tick={{ fill: '#9ca3af', fontSize: 10 }}
+            tick={{ fill: '#94a3b8', fontSize: 10 }}
             axisLine={false}
             tickLine={false}
           />
           <YAxis
-            tick={{ fill: '#9ca3af', fontSize: 10 }}
+            tick={{ fill: '#94a3b8', fontSize: 10 }}
             axisLine={false}
             tickLine={false}
             width={40}
@@ -79,21 +79,21 @@ function PriceHistoryChart({ itemId }) {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#111827',
-              border: '1px solid #374151',
-              borderRadius: '8px',
+              backgroundColor: '#12121f',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              borderRadius: '6px',
               fontSize: '12px',
             }}
-            labelStyle={{ color: '#9ca3af' }}
+            labelStyle={{ color: '#94a3b8' }}
             formatter={(value) => [`$${Number(value).toFixed(2)}`, 'Price']}
           />
           <Line
             type="monotone"
             dataKey="price"
-            stroke="#6366f1"
+            stroke="#a855f7"
             strokeWidth={2}
-            dot={{ fill: '#6366f1', r: 3 }}
-            activeDot={{ r: 5 }}
+            dot={{ fill: '#22d3ee', r: 3 }}
+            activeDot={{ r: 5, fill: '#c084fc', stroke: '#22d3ee' }}
           />
         </LineChart>
       </ResponsiveContainer>

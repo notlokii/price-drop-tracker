@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar'
 import CardGrid from '../components/CardGrid'
 import AddItemModal from '../components/AddItemModal'
 import LoadingSpinner from '../components/LoadingSpinner'
+import StatsBar from '../components/StatsBar'
 import { fetchItems, createItem, deleteItem } from '../api/items'
 import { filterItems } from '../utils/store'
 
@@ -56,11 +57,14 @@ function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="cyber-page">
       <Navbar onTrackItemClick={() => setIsModalOpen(true)} />
       <main className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-xl font-bold sm:text-2xl">Your Tracked Items</h2>
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="cyber-heading text-xl sm:text-2xl">Tracked Items</h2>
+            <p className="mt-1 text-sm text-muted">Monitor prices across your stores</p>
+          </div>
           {!loading && !error && items.length > 0 && (
             <div className="relative w-full sm:max-w-xs">
               <input
@@ -68,10 +72,10 @@ function Dashboard() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by name or store..."
-                className="w-full rounded-lg border border-gray-700 bg-gray-900 px-4 py-2 pl-10 text-sm text-white placeholder-gray-500 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="cyber-input pl-10"
               />
               <svg
-                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500"
+                className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neon/50"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -87,10 +91,12 @@ function Dashboard() {
           )}
         </div>
 
+        {!loading && !error && items.length > 0 && <StatsBar items={items} />}
+
         {loading && <LoadingSpinner label="Loading your items..." />}
 
         {error && (
-          <p className="mb-4 rounded-lg border border-red-800 bg-red-950 px-4 py-3 text-red-300">
+          <p className="mb-4 rounded-md border border-pink/30 bg-pink/5 px-4 py-3 text-pink">
             {error}
           </p>
         )}

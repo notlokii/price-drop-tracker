@@ -1,8 +1,11 @@
 function LoadingSpinner({ label = 'Loading...' }) {
   return (
     <div className="flex flex-col items-center justify-center py-12">
-      <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-700 border-t-indigo-500" />
-      <p className="mt-3 text-sm text-gray-400">{label}</p>
+      <div className="relative h-10 w-10">
+        <div className="absolute inset-0 rounded-full border-2 border-neon/20" />
+        <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-neon border-r-neon-bright" />
+      </div>
+      <p className="mt-4 text-sm uppercase tracking-widest text-muted">{label}</p>
     </div>
   )
 }
