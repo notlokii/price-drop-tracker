@@ -86,6 +86,7 @@ export async function deleteItem(req, res) {
       return res.status(404).json({ error: 'Item not found' })
     }
 
+    await prisma.priceHistory.deleteMany({ where: { itemId: id } })
     await prisma.item.delete({ where: { id } })
     res.status(204).send()
   } catch (err) {

@@ -45,24 +45,29 @@ export async function checkAllPrices() {
         },
       })
 
+      checked++
+
       if (newPrice <= item.targetPrice) {
         console.log(
           `[priceChecker] Target met for "${item.name}" — ${newPrice} <= ${item.targetPrice}`
         )
 
-        await sendPriceDropEmail({
-          to: item.user.email,
-          productName: scraped.name,
-          oldPrice,
-          newPrice,
-          productUrl: item.url,
-        })
-
-        alerts++
-        console.log(`[priceChecker] Email sent to ${item.user.email}`)
+        try {
+          await sendPriceDropEmail({
+            to: item.user.email,
+            productName: scraped.name,
+            oldPrice,
+            newPrice,
+            productUrl: item.url,
+          })
+          alerts++
+          console.log(`[priceChecker] Email sent to ${item.user.email}`)
+        } catch (emailErr) {
+          console.error(
+            `[priceChecker] Price updated but email failed for "${item.name}": ${emailErr.message}`
+          )
+        }
       }
-
-      checked++
     } catch (err) {
       failed++
       console.error(`[priceChecker] Failed "${item.name}": ${err.message}`)

@@ -8,7 +8,20 @@ import { startPriceCheckerCron } from './jobs/priceChecker.js'
 const app = express()
 const PORT = process.env.PORT || 5001
 
-app.use(cors())
+const clientOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(',').map((origin) => origin.trim())
+  : undefined
+
+app.use(
+  cors(
+    clientOrigins
+      ? {
+          origin: clientOrigins,
+          methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+        }
+      : undefined
+  )
+)
 app.use(express.json())
 
 app.get('/', (req, res) => {
@@ -30,6 +43,13 @@ app.use('/items', itemsRouter)
 const server = app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
   console.log(`Test it: http://localhost:${PORT}/test`)
+
+  if (!process.env.RESEND_API_KEY) {
+    console.warn(
+      '[env] RESEND_API_KEY is not set — price checks will run but alert emails will fail'
+    )
+  }
+
   startPriceCheckerCron()
 })
 
