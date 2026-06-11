@@ -43,4 +43,4 @@ RUN chmod +x scripts/start.sh
 
 EXPOSE 5001
 
-CMD ["./scripts/start.sh"]
+CMD ["sh", "scripts/start.sh"]

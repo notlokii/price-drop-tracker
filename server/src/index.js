@@ -1,4 +1,5 @@
 import 'dotenv/config'
+console.log('[boot] Loading PriceDrop API...')
 import express from 'express'
 import cors from 'cors'
 import itemsRouter from './routes/items.js'
